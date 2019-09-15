@@ -56,51 +56,15 @@
         <section>
             <section>
                 <h2>Let's do some image processing!</h2>
+                <p>Scanning in a web app</p>
             </section>
             <section>
-                <h2>Checkout git repo</h2>
+                <h2>Check out the code 🤓</h2>
                 <p>
-                    <a href="https://github.com/r3dDoX/wasm-exercise.git" target="_blank">
-                        https://github.com/r3dDoX/wasm-exercise.git
+                    <a href="https://github.com/webplatformz/camp-wasm" target="_blank">
+                        https://github.com/webplatformz/camp-wasm
                     </a>
                 </p>
-            </section>
-            <section>
-                <h2>Setup</h2>
-                <pre>
-                <code class="hljs sh" data-trim contenteditable data-noescape>
-                    npm i
-                    npm start
-                </code>
-                </pre>
-                <p>
-                    Visit: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
-                    </a>
-                </p>
-            </section>
-            <section>
-                <p>You should see "<code>runtime ready</code>" in the browser console after a couple
-                    of seconds</p>
-            </section>
-            <section>
-                <h2>Project Structure</h2>
-                <ul>
-                    <li>
-                        bin
-                        <ul>
-                            <li>opencv.js</li>
-                        </ul>
-                    </li>
-                    <li>
-                        index.html
-                    </li>
-                    <li>
-                        main.js
-                    </li>
-                    <li>
-                        ...
-                    </li>
-                </ul>
             </section>
             <section>
                 <h2>opencv.js</h2>
@@ -137,32 +101,6 @@
                 </code>
                 </pre>
             </section>
-            <section>
-                <h2>Find width/height</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    const videoTrack = stream.getVideoTracks()[0];
-                    const settings = videoTrack.getSettings();
-
-                    // settings.width / settings.height
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Allow video element to play stream</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    inputVideo.srcObject = stream;
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Exercise Time!</h2>
-                <ul>
-                    <li>Get the stream as mentioned above</li>
-                    <li>Set it on the video element</li>
-                </ul>
-            </section>
         </section>
         <section>
             <section>
@@ -177,110 +115,26 @@
                 </ul>
             </section>
             <section>
-                <h2>Setup VideoCapture</h2>
+                <h2>Loop & Process</h2>
                 <pre>
                 <code class="hljs js" data-trim contenteditable data-noescape>
-                    let cap;
+                    window.requestAnimationFrame(processVideo);
 
-                    function startStreaming() {
+                    function processVideo() {
                         ...
-                        cap = new cv.VideoCapture(inputVideo);
-                        ...
-                    }
-                </code>
-                </pre>
-                <p>This is an OpenCV.js specific functionality</p>
-            </section>
-            <section>
-                <h2>Setup output canvas</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    function startStreaming() {
-                        ...
-                        outputCanvas.setAttribute('width', videoWidthPx);
-                        outputCanvas.setAttribute('height', videoHeightPx);
+                        cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
                         ...
                     }
                 </code>
                 </pre>
             </section>
             <section>
-                <h2>Setup OpenCV Matrices</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    let src;
-                    let dst;
-
-                    function startStreaming() {
-                        ...
-                        src = new cv.Mat(settings.height, settings.width, cv.CV_8UC4);
-                        dst = new cv.Mat(settings.height, settings.width, cv.CV_8UC1);
-                        ...
-                    }
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>OpenCV Constants</h2>
-                <ul>
-                    <li>cv.CV_8UC4 / cv.CV_8UC1</li>
-                    <li>8U is an 8-bit unsigned integer</li>
-                    <li>C4/C1 stands for the channels</li>
-                    <li>Our source has 4 channels per pixel (RGBA)</li>
-                    <li>Our output will only have 1 channel per pixel</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Create function to process frames</h2>
-                <ol>
-                    <li>Read frame from VideoCapture</li>
-                    <li>Apply OpenCV color transformation</li>
-                    <li>Draw to canvas</li>
-                    <li>Loop</li>
-                </ol>
-            </section>
-            <section>
-                <h2>1. Read frame from VideoCapture</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    cap.read(src);
-                </code>
-                </pre>
-                <p>Read frame and write it to src-matrix</p>
-            </section>
-            <section>
-                <h2>2. Apply OpenCV color transformation</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
-                </code>
-                </pre>
-                <p>Transform src- to dst-matrix reducing colors to grayscale</p>
-            </section>
-            <section>
-                <h2>3. Draw to canvas</h2>
+                <h2>Draw to canvas</h2>
                 <pre>
                 <code class="hljs js" data-trim contenteditable data-noescape>
                     cv.imshow(outputCanvas, dst);
                 </code>
                 </pre>
-                <p>Draw dst-matrix to canvas. This is an OpenCV.js specific functionality.</p>
-            </section>
-            <section>
-                <h2>4. Loop</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    window.requestAnimationFrame(processVideo);
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Exercise Time!</h2>
-                <ul>
-                    <li>Initialize matrices and VideoCapture</li>
-                    <li>Create function with draw loop</li>
-                    <li>Call this function after setting up the stream</li>
-                </ul>
             </section>
         </section>
         <section>
@@ -297,141 +151,7 @@
             </section>
         </section>
         <section>
-            <section>
-                <h2>Let's do some basic face detection</h2>
-            </section>
-            <section>
-                <h2>How do we detect faces?</h2>
-                <ol>
-                    <li>We need a classifier</li>
-                    <li>Run it over each frame</li>
-                    <li>Get all detected objects</li>
-                    <li>Draw them on the dst-matrix</li>
-                </ol>
-            </section>
-            <section>
-                <h2>Haar Cascade classifier</h2>
-                <ul>
-                    <li>Classifier trained to detect an object</li>
-                    <li>We're not going to train it ourselves</li>
-                    <li>OpenCV provides a pretrained one</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Loading the classifier</h2>
-                <ul>
-                    <li>Load an XML file from the webserver</li>
-                    <li>Create that file in OpenCV</li>
-                    <li>Instantiate Classifier with this file</li>
-                    <li class="fragment">This is already done in the exercise</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Running the classifier</h2>
-                <ul>
-                    <li>The classifier has to be run on a grayscale matrix</li>
-                    <li>Dst-matrix should not be grayscale</li>
-                    <li>We need another copy of the src-matrix</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Create new grayscale matrix</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    gray = new cv.Mat(); // instantiate once
-                    ...
-                    src.copyTo(dst);
-                    cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY);
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Call classifier</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    faces = new cv.RectVector(); // instantiate once
-                    ...
-                    classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Loop through all faces</h2>
-                <ul>
-                    <li>The vector is now filled with found faces</li>
-                    <li>With JS we can loop over this Vector</li>
-                    <li>Vector has <code>size()</code> and <code>get(i)</code> methods</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Loop through all faces</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    for (let i = 0; i < faces.size(); i++) {
-                        let face = faces.get(i);
-                        ...
-                    }
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Draw them on dst-matrix</h2>
-                <ul>
-                    <li>Every face has: <strong>x</strong>, <strong>y</strong>,
-                        <strong>width</strong> and <strong>height</strong> properties
-                    </li>
-                    <li>To draw a rectangle we need two cv.Point objects</li>
-                    <li>Top left and bottom right</li>
-                    <li><code>cv.rectangle(topLeft, bottomRight, color)</code></li>
-                </ul>
-            </section>
-            <section>
-                <h2>Draw them on dst-matrix</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    let topLeft = new cv.Point(face.x, face.y);
-                    ...
-                    cv.rectangle(dst, topLeft, bottomRight, [255, 0, 0, 255]);
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Scaling</h2>
-                <ul>
-                    <li>We will scale down the input to <strong>320px</strong></li>
-                    <li>Also render it scaled down for the sake of simplicity</li>
-                    <li>You would only scale it down for the algorithm and render it in full scale
-                    </li>
-                </ul>
-            </section>
-            <section>
-                <h2>Exercise Time!</h2>
-                <ul>
-                    <li>Checkout branch <strong>exercise/face-detection</strong></li>
-                    <li>Enhance the steps mentioned above</li>
-                    <li>Have fun!</li>
-                    <li>
-                        <a href="https://wasm-exercise-l69zartok.now.sh/" target="_blank">
-                            Check out deployed version
-                        </a>
-                    </li>
-                </ul>
-            </section>
-        </section>
-        <section>
-            <h2>Performance comparison</h2>
-            <figure>
-                <img src="../img/websight.gif">
-                <figcaption>Comparison by WebSight</figcaption>
-            </figure>
-        </section>
-        <section>
-            <section>
-                <h2>To round it up</h2>
-            </section>
-            <section>
-                <p>Pick the right tool for the task!</p>
-            </section>
+            <h2>Demo Time!</h2>
         </section>
         <section>
             <h2>Resources</h2>
@@ -455,18 +175,6 @@
                     <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API"
                        target="_blank">
                         WebRTC on MDN
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/opencv/opencv/blob/master/samples/dnn/js_face_recognition.html"
-                       target="_blank">
-                        Face recognition example with dnn
-                    </a>
-                </li>
-                <li>
-                    <a href="https://hacks.mozilla.org/2017/09/bootcamps-webassembly-and-computer-vision/"
-                       target="_blank">
-                        Face detection comparison by WebSight
                     </a>
                 </li>
             </ul>
