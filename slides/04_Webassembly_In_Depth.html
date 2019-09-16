@@ -165,12 +165,6 @@
                     <li>Call dealloc function from Rust</li>
                 </ul>
             </section>
-            <section>
-                <h2>Exercise Time!</h2>
-                <ul>
-                    <li>Return a string from Rust</li>
-                </ul>
-            </section>
         </section>
         <section>
             <section>
@@ -207,16 +201,6 @@
                 </ol>
             </section>
             <section>
-                <h2>Importing and activating wasm_bindgen</h2>
-                <pre>
-                <code class="hljs rust" data-trim contenteditable data-noescape>
-                    #![feature(proc_macro, wasm_custom_section, wasm_import_module)]
-                    extern crate wasm_bindgen;
-                    use wasm_bindgen::prelude::*;
-                </code>
-                </pre>
-            </section>
-            <section>
                 <h2>Hello World! 😎</h2>
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
@@ -224,6 +208,16 @@
                     pub fn greet(name: &str) -> String {
                         format!("Hello, {}!", name)
                     }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Importing and activating wasm_bindgen</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #![feature(proc_macro, wasm_custom_section, wasm_import_module)]
+                    extern crate wasm_bindgen;
+                    use wasm_bindgen::prelude::*;
                 </code>
                 </pre>
             </section>
